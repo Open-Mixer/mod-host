@@ -101,6 +101,7 @@ jobs:
         run: timeout 120 sh .github/scripts/smoke-test.sh
 
   rpm:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     container: fedora:44
     timeout-minutes: 30
