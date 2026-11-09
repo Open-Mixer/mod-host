@@ -83,10 +83,17 @@ utils-test: utils-test.c ../src/utils.c ../src/utils.h
 utils-run: utils-test
 	./$<
 
+# a plugin's state paths stay inside its instance's directory: no ".." component, nothing absolute
+state-paths-test: state-paths-test.c ../src/state-paths.c ../src/state-paths.h ../src/utils.c ../src/utils.h
+	$(CC) $< -std=gnu99 -D_GNU_SOURCE -O1 -g -Wall -Wextra -fsanitize=address -fno-omit-frame-pointer -I../src -lm -o $@
+
+state-paths-run: state-paths-test
+	./$<
+
 # meta-rule to generate the object files
 %.o: %.$(EXT)
 	$(CC) $(CFLAGS) -c $(INCS) -o $@ $<
 
 # clean rule
 clean:
-	$(RM) $(SRC_DIR)/*.o $(PROG) socket-test bind-test utils-test
+	$(RM) $(SRC_DIR)/*.o $(PROG) socket-test bind-test utils-test state-paths-test

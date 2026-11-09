@@ -17,6 +17,7 @@ tests/rtmempool-test
 tests/socket-test
 tests/bind-test
 tests/utils-test
+tests/state-paths-test
 tests/self-test-result.json
 src/info.h
 PKGBUILD

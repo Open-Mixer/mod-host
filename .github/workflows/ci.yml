@@ -44,7 +44,7 @@ jobs:
       - name: Protocol tests
         run: timeout 300 make test-protocol test-protocol-commands
       - name: Splitter and framing tests
-        run: timeout 300 make -C tests utils-run socket-run bind-run bind-sabotage
+        run: timeout 300 make -C tests utils-run state-paths-run socket-run bind-run bind-sabotage
       - name: Smoke test
         run: timeout 120 sh .github/scripts/smoke-test.sh
 
@@ -92,7 +92,7 @@ jobs:
       - name: Protocol tests
         run: timeout 300 make test-protocol test-protocol-commands
       - name: Splitter and framing tests
-        run: timeout 300 make -C tests utils-run socket-run bind-run bind-sabotage
+        run: timeout 300 make -C tests utils-run state-paths-run socket-run bind-run bind-sabotage
       - name: Smoke test
         run: timeout 120 sh .github/scripts/smoke-test.sh
 
