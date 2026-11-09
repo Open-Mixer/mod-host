@@ -66,8 +66,10 @@ power to the network. Plugins are trusted native code running in the same proces
   (`atof("nan")`) is not refused, since it fails both comparisons.
 - **Paths:** not enforced. `bundle_add` and `bundle_remove` only `realpath()` their argument; the state,
   preset, `load` and `save` paths are used as given. `MakePluginStatePath()` joins the state directory,
-  `effect-<n>` and the path the plugin asks for, creating directories with mode 0755; it does not refuse
-  `..` or absolute components, so the result can leave the state directory.
+  `effect-<n>` and the path the plugin asks for, creating directories with mode 0755. It refuses (NULL,
+  nothing created) a request that is empty, absolute or has a `..` component, so the result stays inside
+  `effect-<n>`; subdirectories below it are allowed, as LV2's `make_path` allows them
+  (`tests/state-paths-test.c`). A symbolic link a plugin made inside its own directory is still followed.
 - **Fixed PID file:** without `-n`/`-v`/`-i` the parent writes `/tmp/mod-host.pid` with `fopen("w")`
   (`PID_FILE`, `src/mod-host.c`), a predictable name in a shared directory.
 - **Replies:** `resp <n>`, where a negative `n` is an error from `src/host-errors.h`: instance errors
@@ -96,8 +98,8 @@ The harnesses are libFuzzer with AddressSanitizer and UndefinedBehaviorSanitizer
   MIDI maps) is not fuzzed; `fuzz_dispatch` uses a fake.
 - LV2 Turtle metadata, presets and state files are parsed by lilv/serd and are not fuzzed here.
 - MIDI and audio arriving on JACK ports are not fuzzed.
-- `fuzz_statepaths` checks that the joined path is exact; it does not check that it stays below the state
-  directory, and the code does not enforce that (see Paths).
+- `fuzz_statepaths` checks that the joined path is exact and that a request leaving the instance's
+  directory is refused; it does not follow symbolic links.
 - No authentication on the command port, no path allow-list, no check on numeric arguments.
 
 ## Reporting
