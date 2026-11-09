@@ -19,9 +19,15 @@ as an internal client (`jack_initialize()` in the same file), and is driven by t
 - **Threads:** each plugin gets its own JACK client and process callback (`ProcessPlugin`,
   `src/effects.c`), which runs in the JACK real-time thread. Plugins are told, as LV2 options, to run
   their own threads `SCHED_FIFO` one below JACK's priority (`MOD_PLUGIN_THREAD_PRIORITY` overrides it).
-- **User:** whoever starts it. `packaging/mod-host.service` is installed both as a system unit and as a
-  user unit (`packaging/mod-host.spec`). The system unit sets no `User=`, so started that way it runs as
-  root. The unit passes neither `-b` nor `-f`, so it listens on 127.0.0.1:5555 only.
+- **User:** whoever starts it. The package installs two units (`packaging/mod-host.spec`). The system
+  unit (`packaging/mod-host.service`) runs it as the system user `mod-host` (declared by
+  `packaging/mod-host.sysusers`, a member of `audio`) with `NoNewPrivileges`, `ProtectSystem=strict` with
+  only its state directory `/var/lib/mod-host` writable, `ProtectHome=read-only` and `PrivateTmp`, and
+  the real-time and memory-lock limits a JACK client needs (`LimitRTPRIO=95`, `LimitMEMLOCK=infinity`).
+  The user unit (`packaging/mod-host.user.service`, installed as the user's `mod-host.service`) runs it
+  as the user who starts it. `tests/unit-check.sh` holds both to this. Zynthian starts mod-host from a unit
+  of its own, which this package does not change. Neither unit passes `-b` nor `-f`, so it listens on
+  127.0.0.1:5555 only.
 
 ## Inputs
 
@@ -98,6 +104,9 @@ The harnesses are libFuzzer with AddressSanitizer and UndefinedBehaviorSanitizer
   MIDI maps) is not fuzzed; `fuzz_dispatch` uses a fake.
 - LV2 Turtle metadata, presets and state files are parsed by lilv/serd and are not fuzzed here.
 - MIDI and audio arriving on JACK ports are not fuzzed.
+- The system unit's `mod-host` user still reaches every JACK client of the server it joins, and its
+  `PrivateTmp` hides a Control Chain daemon's socket in the shared `/tmp`; a build with Control Chain run
+  as that unit needs the socket moved or `PrivateTmp` dropped.
 - `fuzz_statepaths` checks that the joined path is exact and that a request leaving the instance's
   directory is refused; it does not follow symbolic links.
 - No authentication on the command port, no path allow-list, no check on numeric arguments.

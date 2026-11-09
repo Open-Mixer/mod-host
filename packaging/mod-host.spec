@@ -56,7 +56,8 @@ Headers, the pkg-config file and the backend scenarios of libmod-host-protocol.
 %install
 %make_install PREFIX=%{_prefix} LIBDIR=%{_libdir} MANDIR=%{_mandir}/man1 LDFLAGS="%{build_ldflags}" VERSION=%{version} install-lib
 install -D -m 644 packaging/%{name}.service %{buildroot}%{_unitdir}/%{name}.service
-install -D -m 644 packaging/%{name}.service %{buildroot}%{_userunitdir}/%{name}.service
+install -D -m 644 packaging/%{name}.user.service %{buildroot}%{_userunitdir}/%{name}.service
+install -D -m 644 packaging/%{name}.sysusers %{buildroot}%{_sysusersdir}/%{name}.conf
 
 %check
 ./mod-host -V | grep -F 'version: %{version}'
@@ -70,6 +71,7 @@ make PREFIX=%{_prefix} LIBDIR=%{_libdir} LDFLAGS="%{build_ldflags}" VERSION=%{ve
 %{_mandir}/man1/mod-host.1*
 %{_unitdir}/%{name}.service
 %{_userunitdir}/%{name}.service
+%{_sysusersdir}/%{name}.conf
 
 %files protocol
 %license COPYING

@@ -45,6 +45,8 @@ jobs:
         run: timeout 300 make test-protocol test-protocol-commands
       - name: Splitter and framing tests
         run: timeout 300 make -C tests utils-run state-paths-run socket-run bind-run bind-sabotage
+      - name: Packaged units (system unit as its own user, hardened; user unit as its user)
+        run: sh tests/unit-check.sh
       - name: Smoke test
         run: timeout 120 sh .github/scripts/smoke-test.sh
 
@@ -93,6 +95,8 @@ jobs:
         run: timeout 300 make test-protocol test-protocol-commands
       - name: Splitter and framing tests
         run: timeout 300 make -C tests utils-run state-paths-run socket-run bind-run bind-sabotage
+      - name: Packaged units (system unit as its own user, hardened; user unit as its user)
+        run: sh tests/unit-check.sh
       - name: Smoke test
         run: timeout 120 sh .github/scripts/smoke-test.sh
 

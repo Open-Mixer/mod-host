@@ -11,7 +11,7 @@
 debian
 mod-host
 mod-host.install
-mod-host.service
+/mod-host.service
 tests/effectlib_test
 tests/rtmempool-test
 tests/socket-test
