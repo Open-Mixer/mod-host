@@ -5,4 +5,4 @@ Description=MOD Host Daemon
 ExecStart=/usr/bin/mod-host -v
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
