@@ -116,7 +116,7 @@ jobs:
           fetch-tags: true
 
       # the spec's Version must be the tag's, as debian/changelog's is
-      - uses: Open-Mixer/.github/.github/actions/build-rpm@main
+      - uses: Open-Mixer/.github/.github/actions/build-rpm@openmixer-v1
         with:
           tag: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
 
