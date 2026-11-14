@@ -17,6 +17,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
+
 jobs:
   # no Fedora release written into a job: the cells come from check-matrix (rule 11-10, ruling D25)
   fedora-cells:

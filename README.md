@@ -1,7 +1,7 @@
 mod-host
 ========
 
-FreeMixer fork
+OpenMixer fork
 --------------
 
 This repository is a fork of [mod-audio/mod-host](https://github.com/mod-audio/mod-host).
@@ -50,7 +50,7 @@ ports and replies, with verbs of its own. Its protocol is described in the
 CI (`.github/workflows/ci.yml`) builds on Ubuntu and Fedora 44, checks `make install-lib` with `make
 test-install-lib`, runs the protocol, line splitter and socket
 framing tests, and starts `mod-host -n -p 5555` on a dummy JACK server to check it answers `cpu_load` with
-`resp 0`. The commit message and SPDX header checks of the other FreeMixer repositories do not apply here: this
+`resp 0`. The commit message and SPDX header checks of the other OpenMixer repositories do not apply here: this
 is upstream's code, kept in upstream's style.
 
 About
