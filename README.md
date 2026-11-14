@@ -7,7 +7,7 @@ OpenMixer fork
 This repository is a fork of [mod-audio/mod-host](https://github.com/mod-audio/mod-host).
 
 - `master` mirrors upstream `master` and carries no changes of ours.
-- `freemixer`, the default branch, is upstream `master` plus one commit per pull request below. Every change is
+- `openmixer`, the default branch, is upstream `master` plus one commit per pull request below. Every change is
   meant for upstream; a patch is dropped here once upstream merges it.
 
 | pull request | what | state upstream |

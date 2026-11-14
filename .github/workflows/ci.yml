@@ -10,7 +10,7 @@ name: ci
 
 on:
   push:
-    branches: [freemixer]
+    branches: [openmixer]
   pull_request:
   workflow_dispatch:
 

@@ -12,8 +12,8 @@ Build-Depends: debhelper-compat (= 13),
                libfftw3-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/FreeMixer/mod-host
-Vcs-Git: https://github.com/FreeMixer/mod-host.git -b freemixer
-Vcs-Browser: https://github.com/FreeMixer/mod-host/tree/freemixer
+Vcs-Git: https://github.com/Open-Mixer/mod-host.git -b openmixer
+Vcs-Browser: https://github.com/Open-Mixer/mod-host/tree/openmixer
 Rules-Requires-Root: no
 
 Package: mod-host
