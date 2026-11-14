@@ -23,7 +23,7 @@ Recommends: jackd2 | pipewire-jack
 Description: LV2 host for JACK, controllable over a socket
  mod-host loads LV2 plugins as JACK clients and is driven over a TCP socket
  or an interactive command line. This build carries the patches listed in
- the README of the FreeMixer fork, each one a pull request to
+ the README of the OpenMixer fork, each one a pull request to
  mod-audio/mod-host.
 
 Package: libmod-host-protocol0

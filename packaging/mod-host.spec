@@ -1,4 +1,4 @@
-# The RPMs of the FreeMixer fork of mod-host, built from this tree as the DEBs of debian/ are, at the
+# The RPMs of the OpenMixer fork of mod-host, built from this tree as the DEBs of debian/ are, at the
 # same version. The fork carries the upstream pull requests as commits (README.md); no patch is applied here.
 Name: mod-host
 Version: 0.10.11
@@ -26,7 +26,7 @@ Requires: %{name}-protocol%{?_isa} = %{version}-%{release}
 
 %description
 mod-host loads LV2 plugins as JACK clients and is driven over a TCP socket or
-an interactive command line. This build is the FreeMixer fork, which carries
+an interactive command line. This build is the OpenMixer fork, which carries
 its changes as pull requests to mod-audio/mod-host.
 
 %package protocol
