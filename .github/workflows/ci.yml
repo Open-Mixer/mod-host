@@ -22,6 +22,32 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
 
 jobs:
+  # no Fedora release written into a job: the cells come from check-matrix (rule 11-10, ruling D25)
+  fedora-cells:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows
+      - uses: Open-Mixer/.github/.github/actions/fedora-cells@openmixer-v1
+
+  # the Fedora cells the build and rpm jobs run: check-matrix's answer, fc44 and fc45 (the quick set while a release
+  # wave is open, the whole matrix declared here otherwise)
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      rpm: ${{ steps.m.outputs.rpm }}
+      rpm-count: ${{ steps.m.outputs.rpm-count }}
+    steps:
+      - id: m
+        uses: Open-Mixer/.github/.github/actions/check-matrix@openmixer-v1
+        with:
+          wave: ${{ vars.OMX_RELEASE_MATRIX }}
+          rpm-releases: '["44", "45"]'
+          rpm-arches: '["x86_64"]'
+
   ubuntu:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -77,8 +103,15 @@ jobs:
           if-no-files-found: ignore
 
   fedora:
+    name: fedora (${{ matrix.cell.image }})
+    needs: checks
+    if: needs.checks.outputs.rpm-count != '0'
     runs-on: ubuntu-latest
-    container: fedora:44
+    container: ${{ matrix.cell.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.checks.outputs.rpm) }}
     timeout-minutes: 20
     steps:
       - name: Install build dependencies
@@ -105,9 +138,15 @@ jobs:
         run: timeout 120 sh .github/scripts/smoke-test.sh
 
   rpm:
-    if: github.event_name == 'workflow_dispatch'
+    name: rpm (${{ matrix.cell.image }})
+    needs: checks
+    if: github.event_name == 'workflow_dispatch' && needs.checks.outputs.rpm-count != '0'
     runs-on: ubuntu-latest
-    container: fedora:44
+    container: ${{ matrix.cell.image }}
+    strategy:
+      fail-fast: false
+      matrix:
+        cell: ${{ fromJSON(needs.checks.outputs.rpm) }}
     timeout-minutes: 30
     steps:
       - name: Install the build tools
