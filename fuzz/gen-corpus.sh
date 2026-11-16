@@ -73,3 +73,4 @@ seed '\000\000\000\000/absolute' absolute
 seed '\003\000\000\000a//b' double-slash
 seed '\003\000\000\000..' dotdot
 seed '\003\000\000\000../../etc/passwd' traversal
+seed '\003\000\000\000..x/y' dots
