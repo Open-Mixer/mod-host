@@ -1,10 +1,11 @@
 /* The command parser alone: protocol_parse() over a table of commands that has every shape the real one
    has (fixed words, %i/%s/%f wildcards, a trailing "..."), with callbacks that only count what they were
-   given. Properties: no crash, no leak, a callback only ever runs with the argument count its pattern
-   allows (exactly, or at least the words before the "..." for a variable pattern) and for a command whose first
-   word is its pattern's, a command that names a verb of the table runs its callback exactly when its word
-   count is in the row's range and is otherwise answered "few arguments" or "many arguments", any other command
-   is answered "not found", and every protocol error code has its message. */
+   given. Properties: no crash, a callback only ever runs with the argument count its pattern allows (exactly,
+   or at least the words before the "..." for a variable pattern) and for a command whose first word is its
+   pattern's, a command that names a verb of the table runs its callback exactly when its word count is in the
+   row's range and is otherwise answered "few arguments" or "many arguments", any other command is answered "not
+   found", and every protocol error code has its message. Only the `make fuzz` build checks for leaks: its
+   LeakSanitizer reports one at exit. */
 #include "fuzz.h"
 #include <stdio.h>
 
