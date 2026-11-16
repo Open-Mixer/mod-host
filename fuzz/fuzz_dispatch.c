@@ -1,8 +1,9 @@
 /* The whole command dispatcher: host_dispatch_register() and its monitor_output, plugin-info and
    unsupported tables over a backend whose answers depend on the input, then protocol_parse(). The backend
    answers every error code the host defines, so each verb's mapping of a return value to a reply is reached.
-   Properties: no crash, no leak, and every reply is one NUL-terminated string: "resp <int>", alone or followed
-   by the values of the verb, or one of the four protocol error messages. */
+   Properties: no crash, and every reply is one NUL-terminated string: "resp <int>", alone or followed by the
+   values of the verb, or one of the four protocol error messages. Only the `make fuzz` build checks for leaks:
+   its LeakSanitizer reports one at exit. */
 #include "fuzz.h"
 #include <stdio.h>
 #include "../src/host-backend.h"

@@ -1,8 +1,9 @@
 /* The scenario file reader: host_scenario_load() over any bytes, with $NAME substitution, then
-   host_scenario_free(). Properties: no crash, no leak, and a load that answers a count leaves exactly that
-   many lines, each with a command and a reply. A load answers the lines of the input that are neither blank nor a
-   comment, with the command and the reply it holds for each line (-1 when a line has no "=>", a guard has no
-   command, or there are more lines than the list holds). */
+   host_scenario_free(). Properties: no crash, and a load that answers a count leaves exactly that many lines,
+   each with a command and a reply. A load answers the lines of the input that are neither blank nor a comment,
+   with the command and the reply it holds for each line (-1 when a line has no "=>", a guard has no command, or
+   there are more lines than the list holds). Only the `make fuzz` build checks for leaks: its LeakSanitizer
+   reports one at exit. */
 #include "fuzz.h"
 #include "../src/host-scenario.h"
 #include <stdio.h>

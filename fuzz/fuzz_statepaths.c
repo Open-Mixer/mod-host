@@ -42,23 +42,26 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
     memcpy(&instance, data, sizeof(instance));
     char *request = fuzz_message(data + 4, size - 4);
 
-    /* A request that is empty, absolute or has a ".." component would name a path outside the instance's
-       directory: it is refused, NULL, whatever else it holds.
-       mutant: src/state-paths.c:160 `n == 2 && c[0] == '.' && c[1] == '.'` -> `0`
-       input: traversal */
     if (climbs(request))
     {
         char *path = MakePluginStatePath(instance, g_root, request);
+        /* A request that is empty, absolute or has a ".." component would name a path outside the instance's
+           directory: it is refused, NULL, whatever else it holds.
+           mutant: src/state-paths.c:160 `n == 2 && c[0] == '.' && c[1] == '.'` -> `0`
+           input: traversal */
         if (path)
             abort();
     }
-    else if (strstr(request, "..") == NULL)
+    else
     {
         char *path = MakePluginStatePath(instance, g_root, request);
         /* A request below the scratch directory is made: every directory of it is created or is there, since no
-           part of a request of at most 252 bytes is longer than a file name may be.
+           part of a request of at most 252 bytes is longer than a file name may be. That holds for a request with
+           ".." inside a component that is not ".." itself, such as "..x/y": it does not climb.
            mutant: src/state-paths.c:231 `mkdir(duppath, 0755) && errno != EEXIST` -> `1`
-           input: nested */
+           input: nested
+           mutant: src/state-paths.c:160 `n == 2` -> `n >= 2`
+           input: dots */
         if (!path)
             abort();
         char *want = malloc(strlen(g_root) + strlen(request) + 32);
