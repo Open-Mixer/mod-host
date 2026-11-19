@@ -38,7 +38,7 @@ jobs:
           tools/test/workflow-fedora-check.sh .
       - uses: Open-Mixer/.github/.github/actions/fedora-cells@openmixer-v1
 
-  # the Fedora cells the build and rpm jobs run: check-matrix's answer, fc44 and fc45 (the quick set while a release
+  # the Fedora cells the build and rpm jobs run: check-matrix's answer, Fedora 45 alone (the quick set while a release
   # wave is open, the whole matrix declared here otherwise)
   checks:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
         uses: Open-Mixer/.github/.github/actions/check-matrix@openmixer-v1
         with:
           wave: ${{ vars.OMX_RELEASE_MATRIX }}
-          rpm-releases: '["44", "45"]'
+          rpm-releases: '["45"]'
           rpm-arches: '["x86_64"]'
 
   ubuntu:
