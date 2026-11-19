@@ -29,7 +29,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: .github/workflows
+          sparse-checkout: |
+            .github/workflows
+            tools/test
+      - name: No Fedora 44 reference in the workflows
+        run: |
+          tools/test/workflow-fedora-check.sh --self-test
+          tools/test/workflow-fedora-check.sh .
       - uses: Open-Mixer/.github/.github/actions/fedora-cells@openmixer-v1
 
   # the Fedora cells the build and rpm jobs run: check-matrix's answer, fc44 and fc45 (the quick set while a release
