@@ -98,7 +98,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64]
+        # every package in every cell (owner ruling 2026-11-26): aarch64 beside x86_64, as before the
+        # x86_64-only development matrix of 2026-11-19
+        arch: [x86_64, aarch64]
         fedora: [45]
     runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     container: fedora:${{ matrix.fedora }}
